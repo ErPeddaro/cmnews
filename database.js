@@ -4,10 +4,10 @@ const connectionPool = mysql.createPool({
     user: "tps",
     password: "ttppss",
     database: "cmnews"
-})
+}, { debug: true });
 
 connectionPool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if(error) throw error;
+    if (error) throw error;
     console.log("Db connected successfully - result: ", results[0].solution);
 })
 
