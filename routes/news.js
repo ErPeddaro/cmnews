@@ -10,4 +10,13 @@ router.get('/', (req, res) => {
     })
 });
 
+
+router.post('/', (req, res) => {
+    const { title, content, author} = req.body
+    connectionPool.query(`INSERT INTO news (title, content, author) values ('${title}', '${content}', '${author}')`, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    })
+});
+
 module.exports = router;
