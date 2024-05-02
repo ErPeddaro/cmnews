@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-    const { idUtente, title, content } = req.body;
+    const { id, title, content } = req.body;
 
     let query = "UPDATE news SET";
     let updateValues = [];
@@ -32,7 +32,7 @@ router.put('/', (req, res) => {
         updateValues.push(`content = '${content}'`);
     }
 
-    query += " " + updateValues.join(", ") + `WHERE idUtente = '${idUtente}'`; 
+    query += " " + updateValues.join(", ") + ` WHERE id = ${id}`; 
 
     connectionPool.query(query, function (error, results, fields) {
         if (error) throw error;
