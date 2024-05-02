@@ -19,4 +19,25 @@ router.post('/', (req, res) => {
     })
 });
 
+router.put('/', (req, res) => {
+    const { idUtente, title, content } = req.body;
+
+    let query = "UPDATE news SET";
+    let updateValues = [];
+
+    if (title) {
+        updateValues.push(`title = '${title}'`);
+    }
+    if (content) {
+        updateValues.push(`content = '${content}'`);
+    }
+
+    query += " " + updateValues.join(", ") + `WHERE idUtente = '${idUtente}'`; 
+
+    connectionPool.query(query, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
 module.exports = router;
