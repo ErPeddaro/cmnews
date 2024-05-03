@@ -3,26 +3,26 @@ const router = express.Router();
 const connectionPool = require("../database")
 
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
     try {
-        const results = await connectionPool.query('SELECT * FROM news');
-        res.json(results);
+        const results = connectionPool.query('SELECT * FROM news', function (error, results, fields) {
+            res.json(results);
+        });
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
     const { title, content, author } = req.body;
 
-    const sql = `INSERT INTO news (title, content, author) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO news (title, content, author) VALUES (?, ?, ?)`;
 
     try {
-        const results = await connectionPool.query(sql, [title, content, author]);
+        const results = connectionPool.query(sql, [title, content, author]);
         res.json(results);
     } catch (error) {
-        console.error("Database query error:", error);
         res.status(500).send('Internal Server Error');
     }
 });
@@ -41,11 +41,13 @@ router.put('/', (req, res) => {
     }
 
     query += " " + updateValues.join(", ") + ` WHERE id = ${id}`;
-
+    try {
     connectionPool.query(query, function (error, results, fields) {
-        if (error) throw error;
         res.json(results);
     });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 router.delete('/', (req, res) => {
@@ -56,14 +58,13 @@ router.delete('/', (req, res) => {
     }
 
     let query = `DELETE FROM news WHERE id = ${id}`;
-
-    connectionPool.query(query, function (error, results, fields) {
-        if (error) {
-            return res.status(500).json({ error: 'Database error' });
-        }
+    try { connectionPool.query(query, function (error, results, fields) {
         res.json({ message: 'News item deleted successfully', affectedRows: results.affectedRows });
     });
+    } catch (error) {
+        res.status(500).send('Internal Server Error');
+    }
 });
 
-
+44
 module.exports = router;
