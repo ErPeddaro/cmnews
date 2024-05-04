@@ -3,7 +3,7 @@ const router = express.Router();
 const connectionPool = require("../database")
 
 
-router.get('/',fb (req, res) => {
+router.get('/', (req, res) => {
     try {
         const results = connectionPool.query('SELECT * FROM news', function (error, results, fields) {
             res.json(results);
