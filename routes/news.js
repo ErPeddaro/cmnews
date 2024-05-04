@@ -3,7 +3,7 @@ const router = express.Router();
 const connectionPool = require("../database")
 
 
-router.get('/', (req, res) => {
+router.get('/',fb (req, res) => {
     try {
         const results = connectionPool.query('SELECT * FROM news', function (error, results, fields) {
             res.json(results);
@@ -20,9 +20,11 @@ router.post('/', (req, res) => {
     const query = `INSERT INTO news (title, content, author) VALUES (?, ?, ?)`;
 
     try {
-        const results = connectionPool.query(sql, [title, content, author]);
-        res.json(results);
+        const results = connectionPool.query(query, [title, content, author]);
+        res.json({
+            "data": results.values});
     } catch (error) {
+        console.error(error)
         res.status(500).send('Internal Server Error');
     }
 });
