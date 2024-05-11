@@ -61,7 +61,7 @@ router.delete('/', (req, res) => {
 
     let query = `DELETE FROM user WHERE id = ${idUser}`;
     try { connectionPool.query(query, function (error, results, fields) {
-        res.json({ message: 'News item deleted successfully', affectedRows: results.affectedRows });
+        res.json({ message: 'News item deleted successfully'});
     });
     } catch (error) {
         res.status(500).send('Internal Server Error');
