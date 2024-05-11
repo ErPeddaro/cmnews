@@ -7,14 +7,16 @@ const port = 5000;
 
 const newsRoute = require('./routes/news');
 const userRoute = require('./routes/user');
+const commentsRoute = require('./routes/comments');
 
 
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
 app.use("/news", newsRoute)
 app.use("/user", userRoute)
+app.use("/comments", commentsRoute)
 
 app.get('/', (req, res) => {
     res.send('Server working');
